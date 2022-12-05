@@ -2,6 +2,7 @@ package com.example.foodorderingapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     TextView totalPrice;
     SeekBar quantityValue;
     TextView quantityTitle;
+    double totalPriceVal;
+    int quantity;
     Button order;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
         order.setOnClickListener(v -> {
             calculateTotalPrice();
 
+            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+            intent.putExtra("Item", itemsValue);
+            intent.putExtra("quantity", quantity);
+            intent.putExtra("price", totalPriceVal);
+            startActivity(intent);
         });
 
 
@@ -183,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 itemPrice = 1;
                 break;
         }
-        int quantity = quantityValue.getProgress();
+        quantity = quantityValue.getProgress();
 
         int dealId = group.getCheckedRadioButtonId();
         String deal;
@@ -205,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         double regularPrice = quantity * itemPrice;
         double tax = 0.13 * regularPrice;
         double tip = tipPercentage * regularPrice;
-        double totalPriceVal = regularPrice + tax + tip;
+        totalPriceVal = regularPrice + tax + tip;
 
         totalPrice.setText( "" + totalPriceVal + "$");
 
